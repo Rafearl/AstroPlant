@@ -1,13 +1,31 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Menu, Container, Icon, Button } from 'semantic-ui-react'
-import { NavLink, Link, withRouter } from 'react-router-dom'
-
-
-
+import { NavLink, withRouter } from 'react-router-dom'
+import { openModal } from './modals/ModalActions'
 import { isBrowser, isTablet } from 'react-device-detect'
+import { logOut } from '../Components/auth/authAction'
 
- class Navbar extends Component {
-  state = {}
+
+const actions = {
+    openModal,
+    logOut
+}
+
+const mapState = (state) => ({
+    auth: state.auth
+})
+
+class Navbar extends Component {
+
+
+  handleSignin = () => {
+      this.props.openModal('LoginModal')
+  }
+
+  handleRegister = () => {
+      this.props.openModal('RegisterModal')
+  }
 
   routeChange() {
     let path = '/login';
@@ -16,6 +34,8 @@ import { isBrowser, isTablet } from 'react-device-detect'
 
   
   render() {
+    const { auth, logOut } = this.props;
+    const authenticated = auth.authenticated  
     return (
         <Menu fixed="top"> 
           { isBrowser||isTablet ?   
@@ -31,17 +51,26 @@ import { isBrowser, isTablet } from 'react-device-detect'
                         <Icon name="map marker alternate"></Icon>
                         Map
                     </Menu.Item>
-                    <Menu.Item as={NavLink} to="/analyze" name="myAstroPlant"> 
-                        <Icon name="dashboard"></Icon>
-                        myAstroPlant
-                    </Menu.Item>
+                    {authenticated &&
+                        <Menu.Item as={NavLink} to="/analyze" name="myAstroPlant"> 
+                            <Icon name="dashboard"></Icon>
+                            myAstroPlant
+                        </Menu.Item>
+                    }
 
-                    <Menu.Item position="right">
-                        <Button as={Link} to="/login" basic content="Login"/>
-                        <Button as={Link} to="/signup" basic content="Sing Up" style={{marginLeft:'0.5em'}} />
-                    </Menu.Item>
+                    {!authenticated ?
+                        <Menu.Item position="right">
+                            <Button basic content="Login" onClick={this.handleSignin} />
+                            <Button basic content="Sing Up" onClick={this.handleRegister} style={{marginLeft:'0.5em'}} />
+                        </Menu.Item>                
+                        :
+                        <Menu.Item position="right">
+                            <Button basic content="LogOut" onClick={logOut} />
+                        </Menu.Item>
+                     }
+ 
             </Container>
-            : 
+           : 
             <Container>
                 <Menu.Item header>
                     <h2>AstroPlant</h2>
@@ -68,4 +97,4 @@ import { isBrowser, isTablet } from 'react-device-detect'
   }
 }
 
-export default withRouter(Navbar)
+export default withRouter(connect(mapState, actions)(Navbar)) //null because there is no mapstate

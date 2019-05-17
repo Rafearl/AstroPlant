@@ -11,6 +11,7 @@ import AnalyzePage from './Components/AnalyzePage'
 import LogInPage from './Components/LogInPage';
 import SignUpPage from './Components/SignUpPage';
 import TestComponent from './Components/Test/TestComponent';
+import ModalManager from './Components/modals/ModalManager';
 
 
 
@@ -18,6 +19,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <ModalManager/>
         <Navbar/>
 
         <Switch>
