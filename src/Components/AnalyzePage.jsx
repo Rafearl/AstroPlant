@@ -23,13 +23,13 @@ class AnalyzePage extends Component {
           <Grid stackable textAlign="center" style={{paddingLeft:"4em", paddingRight:"4em"}} >
             <Grid.Row stackable="1" columns={3} width={16}>
               <Grid.Column >
-               <PieChartCards sensor="Air Temp." units="Cº"/>
+               <PieChartCards sensor="Air Temp." units="Cº" val="0"/>
               </Grid.Column>  
               <Grid.Column>
-               <PieChartCards sensor="Air Pressure" units="hPa"/>
+               <PieChartCards sensor="Air Pressure" units="hPa" val="1"/>
               </Grid.Column> 
               <Grid.Column>
-               <PieChartCards sensor="Soil Humidity" units="npi"/>
+               <PieChartCards sensor="Soil Humidity" units="HR" val="2"/>
               </Grid.Column>         
             </Grid.Row>      
           </Grid>

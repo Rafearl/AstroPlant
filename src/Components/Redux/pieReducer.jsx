@@ -1,10 +1,11 @@
 import { createReducer } from '../../app/common/util/reducerUtil'
 
 const initialPieData = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
+    { name: 'Air temp', value: 28 },
+    { name: 'Air pressure', value: 925 },
+    { name: 'Soil humidity', value: 80 },
+
   ];
 
 export default createReducer(initialPieData, [])
+ 

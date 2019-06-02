@@ -1,46 +1,66 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import GoogleMapReact from 'google-map-react';
+import MapInfoElement from './MapInfoElement';
 
-const AnyReactComponent = ({ text }) => (
-    <div style={{
-      color: 'white', 
-      background: 'lightgrey',
-      padding: '15px 10px',
-      display: 'inline-flex',
-      textAlign: 'center',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderRadius: '10%',
-      transform: 'translate(-50%, -50%)'
-    }}>
-      {text}
-    </div>
-  );
 
+const mapMapData = (state) => ({
+  mapData: state.mapData
+})
+  
 class GoogleMap extends Component {
-    static defaultProps = {
-        center: {lat: 40.416705, lng: -3.703582},
-        zoom: 6
-};
-    
-    render() {
-        return (
-          <div style={{ height: '100vh', width: '100%', paddingTop:"2em" }}>
+    state = {
+      showinfo: false
+    }
 
-            <GoogleMapReact
-                bootstrapURLKeys={{ key: ""}}
-                defaultCenter={this.props.center}
-                defaultZoom={this.props.zoom}
-                >
-                <AnyReactComponent 
-                    lat={40.416705} 
-                    lng={-3.703582} 
-                    text={'Madrid Prueba'} 
+    static defaultProps = {
+      center: {lat: 40.416705, lng: -3.703582},
+      zoom: 6
+    };
+   
+    handleClick = () => {
+      if(this.state.showInfo === true) {
+        this.setState({
+          showInfo: false
+        })
+      }else {
+        this.setState({
+          showInfo: true
+        })
+      }
+    }
+
+    render() {
+      const { mapData } = this.props
+
+      return (
+        <div style={{ height: '100vh', width: '100%', paddingTop:"2em" }}>
+
+          <GoogleMapReact
+              bootstrapURLKeys={{ key: "AIzaSyCuMsubyoMGdVPVtenYXf2EYIWE3eSm95M"}}
+              defaultCenter={this.props.center}
+              defaultZoom={this.props.zoom}
+              >
+              {mapData.map( kit =>
+                <MapInfoElement                 
+                  lat={kit.lat} 
+                  lng={kit.lng}
+                  handleClick={this.handleClick}
+                  showInfo={this.state.showInfo}
                 />
-            </GoogleMapReact>
-          </div>
+               )}
+              {/*
+              <MapInfoElement
+                lat={mapData[0].lat} 
+                lng={mapData[0].lng}
+                handleClick={this.handleClick}
+                showInfo={this.state.showInfo}
+              />
+              */}
+          </GoogleMapReact>
+        </div>
     )
 }
 }
 
-export default GoogleMap
+export default connect(mapMapData)(GoogleMap)
